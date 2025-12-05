@@ -1,6 +1,6 @@
 import "./style.css";
 
-let counter: number = 0;
+let currentCringe: number = 0;
 
 document.body.innerHTML = `
   
@@ -16,29 +16,30 @@ interface Item {
 }
 
 const items: Item[] = [
-  { name: "A", cost: 10, rate: 0.1, count: 0 },
-  { name: "B", cost: 100, rate: 2.0, count: 0 },
-  { name: "C", cost: 1000, rate: 50, count: 0 },
+  { name: "Facebook memes", cost: 10, rate: 0.1, count: 0 },
+  { name: "67 memes", cost: 100, rate: 2.0, count: 0 },
+  { name: "Ultimate Cringe Compilation video", cost: 1000, rate: 50, count: 0 },
 ];
 
-// Creation of counter div element
-const counterDiv = document.createElement("div");
-counterDiv.id = "counter";
-counterDiv.textContent = "0.00 cringe 💀";
-document.body.appendChild(counterDiv);
+// Creation of cringe div element
+const cringeDiv = document.createElement("div");
+cringeDiv.id = "cringeDisplay";
+cringeDiv.textContent = "0.00 cringe 💀";
+document.body.appendChild(cringeDiv);
 
-// Add click handler
+// Main cringe button
 const button = document.createElement("button");
 button.id = "increment";
-button.textContent = "💀 Click me to express cringe";
+button.textContent = "💀 Express cringe!";
+button.style.fontSize = "1.5em";
+button.style.padding = "10px 20px";
 document.body.appendChild(button);
 
 button.addEventListener("click", () => {
-  // console.log("I have these thingies:", button, counterElement, counter);
-  // counter incremented by 1
-  counter += 1;
-  // update counter text
-  updateButtonUI();
+  // cringe incremented by 1
+  currentCringe += 1;
+  // update cringe text
+  updateCringeUI();
 });
 
 // Item buttons setup
@@ -48,16 +49,18 @@ items.forEach((item) => {
   btn.textContent =
     `Buy ${item.name} (+${item.rate}/sec) — Cost: ${item.cost} Cringe 💀`;
   btn.disabled = true;
+  btn.style.display = "block";
+  btn.style.marginTop = "5px";
   document.body.appendChild(btn);
 
   btn.addEventListener("click", () => {
-    if (counter >= item.cost) {
-      counter -= item.cost;
+    if (currentCringe >= item.cost) {
+      currentCringe -= item.cost;
       item.count += 1;
 
       item.cost *= 1.15;
 
-      updateButtonUI();
+      updateCringeUI();
     }
   });
 });
@@ -73,11 +76,11 @@ let lastTime: number = performance.now();
 function animate(currentTime: number) {
   const deltaTime = (currentTime - lastTime) / 1000;
 
-  counter += getTotalGrowthRate() * deltaTime;
+  currentCringe += getTotalGrowthRate() * deltaTime;
 
   lastTime = currentTime;
 
-  updateButtonUI();
+  updateCringeUI();
 
   requestAnimationFrame(animate);
 }
@@ -85,15 +88,15 @@ function animate(currentTime: number) {
 requestAnimationFrame(animate);
 
 // Button UI updater
-function updateButtonUI() {
+function updateCringeUI() {
   const totalRate = getTotalGrowthRate();
-  counterDiv.textContent = `${counter.toFixed(2)} cringe 💀 | Rate: ${
+  cringeDiv.textContent = `${currentCringe.toFixed(2)} cringe 💀 | Rate: ${
     totalRate.toFixed(2)
   }/sec`;
 
   items.forEach((u) => {
     if (u.button) {
-      u.button.disabled = counter < u.cost;
+      u.button.disabled = currentCringe < u.cost;
       u.button.textContent = `Buy ${u.name} (+${u.rate}/sec) — Cost: ${
         u.cost.toFixed(2)
       } Cringe 💀`;
@@ -101,5 +104,5 @@ function updateButtonUI() {
   });
 
   const countsText = items.map((u) => `${u.name}: ${u.count}`).join(" | ");
-  counterDiv.textContent += ` | Items: ${countsText}`;
+  cringeDiv.textContent += ` | Items: ${countsText}`;
 }
