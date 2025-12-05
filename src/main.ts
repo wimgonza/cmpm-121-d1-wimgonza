@@ -1,11 +1,25 @@
 import "./style.css";
 
 let counter: number = 0;
-let growthRate: number = 0;
 
 document.body.innerHTML = `
   
 `;
+
+// Definition of items
+interface Item {
+  name: string;
+  cost: number;
+  rate: number;
+  count: number;
+  button?: HTMLButtonElement;
+}
+
+const items: Item[] = [
+  { name: "A", cost: 10, rate: 0.1, count: 0 },
+  { name: "B", cost: 100, rate: 2.0, count: 0 },
+  { name: "C", cost: 1000, rate: 50, count: 0 },
+];
 
 // Creation of counter div element
 const counterDiv = document.createElement("div");
@@ -27,28 +41,36 @@ button.addEventListener("click", () => {
   updateButtonUI();
 });
 
-// Upgrade button setup
-const upgradeButton = document.createElement("button");
-upgradeButton.id = "upgrade";
-upgradeButton.textContent = "Buy Auto Cringe (+1/sec) — Cost: 10 Cringe 💀";
-upgradeButton.disabled = true;
-document.body.appendChild(upgradeButton);
+// Item buttons setup
+items.forEach((item) => {
+  const btn = document.createElement("button");
+  item.button = btn;
+  btn.textContent =
+    `Buy ${item.name} (+${item.rate}/sec) — Cost: ${item.cost} Cringe 💀`;
+  btn.disabled = true;
+  document.body.appendChild(btn);
 
-upgradeButton.addEventListener("click", () => {
-  if (counter >= 10) {
-    counter -= 10;
-    growthRate += 1;
-    updateButtonUI();
-  }
+  btn.addEventListener("click", () => {
+    if (counter >= item.cost) {
+      counter -= item.cost;
+      item.count += 1;
+      updateButtonUI();
+    }
+  });
 });
 
-// Continuous growth setup with requestAnimationFrame
+// Total growth rate calculation
+function getTotalGrowthRate() {
+  return items.reduce((sum, u) => sum + u.count * u.rate, 0);
+}
+
+// Continuous growth setup
 let lastTime: number = performance.now();
 
 function animate(currentTime: number) {
   const deltaTime = (currentTime - lastTime) / 1000;
 
-  counter += growthRate * deltaTime;
+  counter += getTotalGrowthRate() * deltaTime;
 
   lastTime = currentTime;
 
@@ -61,9 +83,15 @@ requestAnimationFrame(animate);
 
 // Button UI updater
 function updateButtonUI() {
-  counterDiv.textContent = `${
-    counter.toFixed(2)
-  } cringe 💀 | Rate: ${growthRate}/sec`;
+  const totalRate = getTotalGrowthRate();
+  counterDiv.textContent = `${counter.toFixed(2)} cringe 💀 | Rate: ${
+    totalRate.toFixed(2)
+  }/sec`;
 
-  upgradeButton.disabled = counter < 10;
+  items.forEach((u) => {
+    if (u.button) u.button.disabled = counter < u.cost;
+  });
+
+  const countsText = items.map((u) => `${u.name}: ${u.count}`).join(" | ");
+  counterDiv.textContent += ` | Items: ${countsText}`;
 }
