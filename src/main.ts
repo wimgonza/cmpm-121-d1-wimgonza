@@ -25,3 +25,9 @@ button.addEventListener("click", () => {
   // update counter text
   counterDiv.textContent = `${counter} cringe 💀`;
 });
+
+// Automatic clicking setup with setInterval
+setInterval(() => {
+  counter++;
+  counterDiv.textContent = `${counter} cringe 💀`;
+}, 1000);
