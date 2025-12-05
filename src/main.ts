@@ -7,7 +7,7 @@ document.body.innerHTML = `
   
 `;
 
-// Definition of items
+// --- Definition of Items ---
 interface Item {
   name: string;
   cost: number;
@@ -79,7 +79,7 @@ button.addEventListener("click", () => {
   updateCringeUI();
 });
 
-// Item buttons setup
+// --- Item Buttons Setup ---
 availableItems.forEach((item) => {
   const btn = document.createElement("button");
   item.button = btn;
@@ -104,7 +104,7 @@ function getTotalGrowthRate() {
   return availableItems.reduce((sum, item) => sum + item.count * item.rate, 0);
 }
 
-// Continuous growth setup
+// --- Continuous Growth Setup ---
 let lastTime: number = performance.now();
 
 // --- Animation Loop ---
