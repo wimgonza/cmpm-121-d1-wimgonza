@@ -18,9 +18,6 @@ button.id = "increment";
 button.textContent = "💀";
 document.body.appendChild(button);
 
-// Counter element
-const counterElement = document.getElementById("counter")!;
-
 button.addEventListener("click", () => {
   // console.log("I have these thingies:", button, counterElement, counter);
   // counter incremented by 1
