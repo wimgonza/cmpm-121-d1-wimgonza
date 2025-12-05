@@ -72,6 +72,44 @@ button.style.fontSize = "1.5em";
 button.style.padding = "10px 20px";
 document.body.appendChild(button);
 
+// --- Game Logic ---
+function calculateTotalProductionRate() {
+  return availableItems.reduce((sum, item) => sum + item.count * item.rate, 0);
+}
+
+// --- Animation Loop ---
+function animate(currentTime: number) {
+  const deltaTime = (currentTime - lastTime) / 1000;
+
+  cringeCount += calculateTotalProductionRate() * deltaTime;
+
+  lastTime = currentTime;
+
+  updateCringeUI();
+
+  requestAnimationFrame(animate);
+}
+
+// --- UI Update Functions ---
+function updateCringeUI() {
+  const totalRate = calculateTotalProductionRate();
+
+  availableItems.forEach((item) => {
+    if (item.button) {
+      item.button.disabled = cringeCount < item.cost;
+      item.button.textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${
+        item.cost.toFixed(2)
+      } Cringe 💀\n${item.description}`;
+    }
+  });
+
+  const itemsText = availableItems.map((item) => `${item.name}: ${item.count}`)
+    .join(" | ");
+  displayElement.textContent = `${cringeCount.toFixed(2)} cringe 💀 | Rate: ${
+    totalRate.toFixed(2)
+  }/sec | Items: ${itemsText}`;
+}
+
 button.addEventListener("click", () => {
   // cringe incremented by 1
   cringeCount += 1;
@@ -99,45 +137,7 @@ availableItems.forEach((item) => {
   });
 });
 
-// --- Game Logic ---
-function calculateTotalProductionRate() {
-  return availableItems.reduce((sum, item) => sum + item.count * item.rate, 0);
-}
-
 // --- Continuous Growth Setup ---
 let lastTime: number = performance.now();
 
-// --- Animation Loop ---
-function animate(currentTime: number) {
-  const deltaTime = (currentTime - lastTime) / 1000;
-
-  cringeCount += calculateTotalProductionRate() * deltaTime;
-
-  lastTime = currentTime;
-
-  updateCringeUI();
-
-  requestAnimationFrame(animate);
-}
-
 requestAnimationFrame(animate);
-
-// --- UI Update Functions ---
-function updateCringeUI() {
-  const totalRate = calculateTotalProductionRate();
-
-  availableItems.forEach((item) => {
-    if (item.button) {
-      item.button.disabled = cringeCount < item.cost;
-      item.button.textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${
-        item.cost.toFixed(2)
-      } Cringe 💀\n${item.description}`;
-    }
-  });
-
-  const itemsText = availableItems.map((item) => `${item.name}: ${item.count}`)
-    .join(" | ");
-  displayElement.textContent = `${cringeCount.toFixed(2)} cringe 💀 | Rate: ${
-    totalRate.toFixed(2)
-  }/sec | Items: ${itemsText}`;
-}
