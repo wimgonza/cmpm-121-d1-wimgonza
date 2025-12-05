@@ -69,7 +69,8 @@ const button = document.createElement("button");
 button.id = "increment";
 button.textContent = "💀 Express cringe!";
 button.style.fontSize = "1.5em";
-button.style.padding = "10px 20px";
+// Inspiration from Juliamanou for larger button
+button.style.padding = "200px 200px";
 document.body.appendChild(button);
 
 // --- Game Logic ---
