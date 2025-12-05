@@ -1,12 +1,16 @@
-import exampleIconUrl from "./noun-paperclip-7598668-00449F.png";
 import "./style.css";
 
 let counter: number = 0;
 
 document.body.innerHTML = `
-  <p>Example image asset: <img src="${exampleIconUrl}" class="icon" /></p>
-  <p>Counter: <span id="counter">0</span></p>
+  
 `;
+
+// Creation of counter div element
+const counterDiv = document.createElement("div");
+counterDiv.id = "counter";
+counterDiv.textContent = "0 cringe 💀";
+document.body.appendChild(counterDiv);
 
 // Add click handler
 const button = document.createElement("button");
@@ -22,5 +26,5 @@ button.addEventListener("click", () => {
   // counter incremented by 1
   counter++;
   // update counter text
-  counterElement.textContent = counter.toString();
+  counterDiv.textContent = `${counter} cringe 💀`;
 });
