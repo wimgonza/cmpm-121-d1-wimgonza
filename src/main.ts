@@ -1,3 +1,4 @@
+// --- Game State & Types ---
 import "./style.css";
 
 let currentCringe: number = 0;
@@ -16,6 +17,7 @@ interface Item {
   button?: HTMLButtonElement;
 }
 
+// --- Upgrade Definitions ---
 const availableItems: Item[] = [
   {
     name: "Facebook memes",
@@ -57,12 +59,12 @@ const availableItems: Item[] = [
   },
 ];
 
-// Creation of cringe div element
+// --- DOM Elements ---
 const cringeDiv = document.createElement("div");
 cringeDiv.id = "cringeDisplay";
 document.body.appendChild(cringeDiv);
 
-// Main cringe button
+// --- Event Listeners ---
 const button = document.createElement("button");
 button.id = "increment";
 button.textContent = "💀 Express cringe!";
@@ -97,7 +99,7 @@ availableItems.forEach((item) => {
   });
 });
 
-// Total growth rate calculation
+// --- Game Logic ---
 function getTotalGrowthRate() {
   return availableItems.reduce((sum, item) => sum + item.count * item.rate, 0);
 }
@@ -105,6 +107,7 @@ function getTotalGrowthRate() {
 // Continuous growth setup
 let lastTime: number = performance.now();
 
+// --- Animation Loop ---
 function animate(currentTime: number) {
   const deltaTime = (currentTime - lastTime) / 1000;
 
@@ -119,7 +122,7 @@ function animate(currentTime: number) {
 
 requestAnimationFrame(animate);
 
-// Button UI updater
+// --- UI Update Functions ---
 function updateCringeUI() {
   const totalRate = getTotalGrowthRate();
 
