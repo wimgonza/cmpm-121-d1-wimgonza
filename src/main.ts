@@ -54,6 +54,9 @@ items.forEach((item) => {
     if (counter >= item.cost) {
       counter -= item.cost;
       item.count += 1;
+
+      item.cost *= 1.15;
+
       updateButtonUI();
     }
   });
@@ -89,7 +92,12 @@ function updateButtonUI() {
   }/sec`;
 
   items.forEach((u) => {
-    if (u.button) u.button.disabled = counter < u.cost;
+    if (u.button) {
+      u.button.disabled = counter < u.cost;
+      u.button.textContent = `Buy ${u.name} (+${u.rate}/sec) — Cost: ${
+        u.cost.toFixed(2)
+      } Cringe 💀`;
+    }
   });
 
   const countsText = items.map((u) => `${u.name}: ${u.count}`).join(" | ");
