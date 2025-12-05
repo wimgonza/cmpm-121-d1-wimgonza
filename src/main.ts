@@ -1,7 +1,7 @@
 // --- Game State & Types ---
 import "./style.css";
 
-let currentCringe: number = 0;
+let cringeCount: number = 0;
 
 document.body.innerHTML = `
   
@@ -60,9 +60,9 @@ const availableItems: Item[] = [
 ];
 
 // --- DOM Elements ---
-const cringeDiv = document.createElement("div");
-cringeDiv.id = "cringeDisplay";
-document.body.appendChild(cringeDiv);
+const displayElement = document.createElement("div");
+displayElement.id = "cringeDisplay";
+document.body.appendChild(displayElement);
 
 // --- Event Listeners ---
 const button = document.createElement("button");
@@ -74,7 +74,7 @@ document.body.appendChild(button);
 
 button.addEventListener("click", () => {
   // cringe incremented by 1
-  currentCringe += 1;
+  cringeCount += 1;
   // update cringe text
   updateCringeUI();
 });
@@ -88,8 +88,8 @@ availableItems.forEach((item) => {
   document.body.appendChild(btn);
 
   btn.addEventListener("click", () => {
-    if (currentCringe >= item.cost) {
-      currentCringe -= item.cost;
+    if (cringeCount >= item.cost) {
+      cringeCount -= item.cost;
       item.count += 1;
 
       item.cost *= 1.15;
@@ -100,7 +100,7 @@ availableItems.forEach((item) => {
 });
 
 // --- Game Logic ---
-function getTotalGrowthRate() {
+function calculateTotalProductionRate() {
   return availableItems.reduce((sum, item) => sum + item.count * item.rate, 0);
 }
 
@@ -111,7 +111,7 @@ let lastTime: number = performance.now();
 function animate(currentTime: number) {
   const deltaTime = (currentTime - lastTime) / 1000;
 
-  currentCringe += getTotalGrowthRate() * deltaTime;
+  cringeCount += calculateTotalProductionRate() * deltaTime;
 
   lastTime = currentTime;
 
@@ -124,11 +124,11 @@ requestAnimationFrame(animate);
 
 // --- UI Update Functions ---
 function updateCringeUI() {
-  const totalRate = getTotalGrowthRate();
+  const totalRate = calculateTotalProductionRate();
 
   availableItems.forEach((item) => {
     if (item.button) {
-      item.button.disabled = currentCringe < item.cost;
+      item.button.disabled = cringeCount < item.cost;
       item.button.textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${
         item.cost.toFixed(2)
       } Cringe 💀\n${item.description}`;
@@ -137,7 +137,7 @@ function updateCringeUI() {
 
   const itemsText = availableItems.map((item) => `${item.name}: ${item.count}`)
     .join(" | ");
-  cringeDiv.textContent = `${currentCringe.toFixed(2)} cringe 💀 | Rate: ${
+  displayElement.textContent = `${cringeCount.toFixed(2)} cringe 💀 | Rate: ${
     totalRate.toFixed(2)
   }/sec | Items: ${itemsText}`;
 }
