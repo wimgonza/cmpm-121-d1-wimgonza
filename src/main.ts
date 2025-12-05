@@ -12,13 +12,49 @@ interface Item {
   cost: number;
   rate: number;
   count: number;
+  description: string;
   button?: HTMLButtonElement;
 }
 
 const availableItems: Item[] = [
-  { name: "Facebook memes", cost: 10, rate: 0.1, count: 0 },
-  { name: "67 memes", cost: 100, rate: 2.0, count: 0 },
-  { name: "Ultimate Cringe Compilation video", cost: 1000, rate: 50, count: 0 },
+  {
+    name: "Facebook memes",
+    cost: 10,
+    rate: 0.1,
+    count: 0,
+    description: "Classic cringe memes from Facebook to farm cringe.",
+  },
+  {
+    name: "67 memes",
+    cost: 100,
+    rate: 2.0,
+    count: 0,
+    description:
+      "A viral collection of cringeworthy 67 memes to induce cringe.",
+  },
+  {
+    name: "Ultimate Cringe Compilation video",
+    cost: 1000,
+    rate: 50,
+    count: 0,
+    description:
+      "Try not to cringe challenge - impossible. This one is extra cringe.",
+  },
+  {
+    name: "TikTok fails",
+    cost: 5000,
+    rate: 200,
+    count: 0,
+    description:
+      "Don't you just hate it when things don't go right? Cringe at other's mistakes.",
+  },
+  {
+    name: "Awkward Zoom prank calls",
+    cost: 20000,
+    rate: 1000,
+    count: 0,
+    description: "Endless cringe from virtual gatherings gone wrong.",
+  },
 ];
 
 // Creation of cringe div element
@@ -92,7 +128,7 @@ function updateCringeUI() {
       item.button.disabled = currentCringe < item.cost;
       item.button.textContent = `Buy ${item.name} (+${item.rate}/sec) — Cost: ${
         item.cost.toFixed(2)
-      } Cringe 💀`;
+      } Cringe 💀\n${item.description}`;
     }
   });
 
